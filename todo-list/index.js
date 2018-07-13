@@ -1,14 +1,25 @@
 // ===========================================================================
-// DATA STORAGE
-
-const todos = []
-
-// ===========================================================================
 // DOM ELEMENTS
 
 const todoInputForm = document.getElementById("todo-input-form")
 const todoSearchForm = document.getElementById("todo-search-form")
 const todoOutput = document.getElementById("todo-output")
+
+// ===========================================================================
+// DATA STORAGE
+
+let TODOS = []
+
+const get = () => {
+    return TODOS
+};
+
+const set = (todos) => {
+    TODOS = todos
+};
+
+// ===========================================================================
+// DATA SEEDER
 
 const seed = (todos) => {
     todos.push({
@@ -49,11 +60,11 @@ const createTodoElement = (todo, index) => {
                 ${moment(todo.date).calendar()}
             </span>
             <div class="btn-group">
-                <button class="destroy btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
+                <button id="destroy-${index}" class="destroy btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Remove" data-original-title="Remove">
                     rm
                 </button>
-                <button class="edit btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
+                <button id="update-${index}" class="update btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
                 title="Edit" data-original-title="Edit">
                     mv
                 </button>
@@ -65,6 +76,8 @@ const createTodoElement = (todo, index) => {
 const display = () => {
     todoOutput.innerHTML = ""
 
+    const todos = get()
+
     todos.forEach((todo, index) => {
         const todoElement = createTodoElement(todo, index)
         todoOutput.append(todoElement)
@@ -74,28 +87,58 @@ const display = () => {
 }
 
 // ===========================================================================
+// CREATE
+
+const create = (event) => {
+    event.preventDefault()
+
+    const todos = get()
+    const todoInputText = document.getElementById("todo-input-text").value
+
+    if (todoInputText) {
+        todos.push({
+            text: todoInputText,
+            date: new Date()
+        })
+        set(todos);
+        display();
+    }
+}
+
+// ===========================================================================
+// SEARCH
+
+const search = (event) => {
+    event.preventDefault()
+}
+
+// ===========================================================================
+// DESTROY
+
+const destroy = (event) => {
+    if (event.target.matches(".destroy")) {
+        const id = event.target.id.replace("destroy-", "");
+        const todos = get();
+
+        todos.splice(id, 1); // delete the object with specified index
+        set(todos);
+        display();
+    }
+}
+
+// ===========================================================================
 // LISTENERS
 
-todoInputForm.addEventListener("submit", (event) => {
-    event.preventDefault()
-    const todoInputText = document.getElementById("todo-input-text").value
-    todos.push({
-        text: todoInputText,
-        date: new Date()
-    })
-
-    if (todoInputText !== "") display()
-})
-
-todoSearchForm.addEventListener("submit", (event) => {
-    event.preventDefault()
-})
+todoInputForm.addEventListener("submit", create)
+todoSearchForm.addEventListener("submit", search)
+todoOutput.addEventListener("click", destroy);
+// todoOutput.addEventListener("click", update);
 
 // ===========================================================================
 // INITIALIZER
 
 // SEEDER
-seed(todos)
+seed(TODOS)
 
 // INITIAL DISPLAY
 display()
