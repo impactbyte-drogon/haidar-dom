@@ -9,7 +9,9 @@ body {
     flex-direction: column;
 }
 
-.header {}
+.header {
+    margin: 10px 0;
+}
 
 .todo-app {
     flex: 1;
@@ -27,8 +29,12 @@ body {
 
 .todo-output {}
 
-.todo-item {}
+.todo-item {
+    padding-bottom: 8px;
+    border-bottom: 2px solid #333;
+    margin-bottom: 8px;
+}
 
-.delete {}
+.destroy {}
 
 .edit {}
