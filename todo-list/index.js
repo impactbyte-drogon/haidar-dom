@@ -60,12 +60,12 @@ const createTodoElement = (todo, index) => {
                 ${moment(todo.date).calendar()}
             </span>
             <div class="btn-group">
-                <button id="destroy-${index}" class="destroy btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
-                title="Remove" data-original-title="Remove">
+                <button id="destroy-${index}" class="destroy btn btn-outline-light btn-sm" 
+                title="Remove">
                     rm
                 </button>
-                <button id="update-${index}" class="update btn btn-outline-light btn-sm" data-toggle="tooltip" data-placement="top"
-                title="Edit" data-original-title="Edit">
+                <button id="update-${index}" class="update btn btn-outline-light btn-sm"
+                title="Update">
                     mv
                 </button>
             </div>
@@ -82,8 +82,6 @@ const display = () => {
         const todoElement = createTodoElement(todo, index)
         todoOutput.append(todoElement)
     })
-
-    $('[data-toggle="tooltip"]').tooltip()
 }
 
 // ===========================================================================
